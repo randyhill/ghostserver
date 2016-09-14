@@ -13,8 +13,12 @@ app.use(bodyParser.json());
 // Create a database variable outside of the database connection callback to reuse the connection pool in your app.
 var db;
 
+// app.use(bodyParser.urlencoded({ extended: false })); // parse application/x-www-form-urlencoded
+
+var mongoURI = 'mongodb://localhost/ghostpics';
+
 // Connect to the database before starting the application server. 
-mongodb.MongoClient.connect(process.env.MONGODB_URI, function (err, database) {
+mongodb.MongoClient.connect(process.env.MONGODB_URI || mongoURI, function (err, database) {
   if (err) {
     console.log(err);
     process.exit(1);
@@ -108,4 +112,90 @@ app.delete("/contacts/:id", function(req, res) {
       res.status(204).end();
     }
   });
+});
+
+// ---------------------- File Upload ----------------------
+var fs = require('fs-extra');       //File System - for file manipulation
+var busboy = require("connect-busboy");
+app.use(busboy());
+
+app.post("/upload", function(req, res) {
+  if(req.busboy) {
+    var fstream;
+    req.busboy.on("file", function(fieldName, fileStream, fileName, encoding, mimeType) {
+      //Handle file stream here
+      console.log("Uploading: " + fileName);
+
+      //Path where image will be uploaded
+      var localName = randomName(12)
+      var localPath = './img/' + localName; //__dirname + '/img/' + fileName;
+      fstream = fs.createWriteStream(localPath);
+      fileStream.pipe(fstream);
+      fstream.on('close', function () {
+        console.log("Upload Finished of " + localName);
+        //res.redirect('back');           //where to go next
+        res.status(200).json(localName);
+      });
+    });
+    req.busboy.on('field', function(fieldname, val, fieldnameTruncated, valTruncated, encoding, mimetype){
+      console.log('Field [' + fieldname + ']: value: ' + inspect(val));
+    })
+    req.busboy.on('error', function(err) {
+      console.log(err)
+    })
+    req.busboy.on("finish", function() {
+      console.log("finished")
+    })
+    return req.pipe(req.busboy);
+  }
+  //Something went wrong -- busboy was not loaded
+});
+
+function randomName(length) {
+  var chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+  var result = '';
+  for (var i = length; i > 0; i-=1) {
+    result += chars[Math.floor(Math.random() * chars.length)];
+  }
+  return result
+}
+
+app.get("/download/:id", function(req, res){
+  var filePath = "./img/" + req.params.id;
+  console.log("downloading file: " + filePath);
+  res.download(filePath, req.fileName, function (err) {
+    if (err == null) {
+      fs.remove(filePath, function (err) {
+        if (err == null) {
+          console.log("file deleted");
+        } else {
+          console.log("could not delete file" + err);
+        }
+      });
+      res.status(200);
+    } else {
+      res.download("./public/GHPMessage.png", function(err){
+        if (err == null) {
+          res.status(200);
+        } else {
+          console.log("error in download" + err);
+          res.status(err.status)
+        }
+      })
+    }
+  })
+});
+
+app.get("/exists/:id", function(req, res){
+  var filePath = "./img/" + req.params.id;
+  fs.access(filePath, function(err){
+    if (err) {
+      // No access, file doesn't exist, return file not found error
+      console.log("file didn't exist" + err)
+      res.status(404).json("file doesn't exist");
+    } else {
+      console.log("file exists: " + filePath)
+      res.status(200).json("file exists")
+    }
+  })
 });
