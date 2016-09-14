@@ -1,0 +1,1 @@
+-- Blank file used to trick heroku into creating img directory
