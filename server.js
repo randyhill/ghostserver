@@ -4,7 +4,8 @@ var bodyParser = require("body-parser");
 var mongodb = require("mongodb");
 var ObjectID = mongodb.ObjectID;
 
-var CONTACTS_COLLECTION = "contacts";
+var COUNT_UPLOADS = "uploads";
+var COUNT_DOWNLOADS = "downloads";
 
 var app = express();
 app.use(express.static(__dirname + "/public"));
@@ -43,81 +44,96 @@ function handleError(res, reason, message, code) {
   res.status(code || 500).json({"error": message});
 }
 
-/*  "/contacts"
+/*  "/uploads"
  *    GET: finds all contacts
  *    POST: creates a new contact
  */
 
-app.get("/contacts", function(req, res) {
-  db.collection(CONTACTS_COLLECTION).find({}).toArray(function(err, docs) {
+app.get("/uploads", function(req, res) {
+  db.collection(COUNT_UPLOADS).find({}).toArray(function(err, docs) {
     if (err) {
-      handleError(res, err.message, "Failed to get contacts.");
+      handleError(res, err.message, "Failed to get uploads.");
     } else {
-      res.status(200).json(docs);  
+      res.status(200).json(docs);
     }
   });
 });
 
-app.post("/contacts", function(req, res) {
-  var newContact = req.body;
-  newContact.createDate = new Date();
-
-  if (!(req.body.firstName || req.body.lastName)) {
-    handleError(res, "Invalid user input", "Must provide a first or last name.", 400);
-  }
-
-  db.collection(CONTACTS_COLLECTION).insertOne(newContact, function(err, doc) {
-    if (err) {
-      handleError(res, err.message, "Failed to create new contact.");
-    } else {
-      res.status(201).json(doc.ops[0]);
-    }
-  });
-});
-
+// app.post("/contacts", function(req, res) {
+//   var newContact = req.body;
+//   newContact.createDate = new Date();
+//
+//   if (!(req.body.firstName || req.body.lastName)) {
+//     handleError(res, "Invalid user input", "Must provide a first or last name.", 400);
+//   }
+//
+//   db.collection(COUNT_COLLECTION).insertOne(newContact, function(err, doc) {
+//     if (err) {
+//       handleError(res, err.message, "Failed to create new contact.");
+//     } else {
+//       res.status(201).json(doc.ops[0]);
+//     }
+//   });
+// });
+//
 /*  "/contacts/:id"
  *    GET: find contact by id
  *    PUT: update contact by id
  *    DELETE: deletes contact by id
  */
 
-app.get("/contacts/:id", function(req, res) {
-  db.collection(CONTACTS_COLLECTION).findOne({ _id: new ObjectID(req.params.id) }, function(err, doc) {
+app.get("/uploads/:id", function(req, res) {
+  db.collection(COUNT_UPLOADS).findOne({ _id: new ObjectID(req.params.id) }, function(err, doc) {
     if (err) {
-      handleError(res, err.message, "Failed to get contact");
+      handleError(res, err.message, "Failed to get upload");
     } else {
-      res.status(200).json(doc);  
+      res.status(200).json(doc);
     }
   });
 });
+//
+// app.put("/contacts/:id", function(req, res) {
+//   var updateDoc = req.body;
+//   delete updateDoc._id;
+//
+//   db.collection(COUNT_COLLECTION).updateOne({_id: new ObjectID(req.params.id)}, updateDoc, function(err, doc) {
+//     if (err) {
+//       handleError(res, err.message, "Failed to update contact");
+//     } else {
+//       res.status(204).end();
+//     }
+//   });
+// });
+//
+// app.delete("/contacts/:id", function(req, res) {
+//   db.collection(COUNT_COLLECTION).deleteOne({_id: new ObjectID(req.params.id)}, function(err, result) {
+//     if (err) {
+//       handleError(res, err.message, "Failed to delete contact");
+//     } else {
+//       res.status(204).end();
+//     }
+//   });
+// });
 
-app.put("/contacts/:id", function(req, res) {
-  var updateDoc = req.body;
-  delete updateDoc._id;
-
-  db.collection(CONTACTS_COLLECTION).updateOne({_id: new ObjectID(req.params.id)}, updateDoc, function(err, doc) {
-    if (err) {
-      handleError(res, err.message, "Failed to update contact");
-    } else {
-      res.status(204).end();
-    }
-  });
-});
-
-app.delete("/contacts/:id", function(req, res) {
-  db.collection(CONTACTS_COLLECTION).deleteOne({_id: new ObjectID(req.params.id)}, function(err, result) {
-    if (err) {
-      handleError(res, err.message, "Failed to delete contact");
-    } else {
-      res.status(204).end();
-    }
-  });
-});
-
-// ---------------------- File Upload ----------------------
 var fs = require('fs-extra');       //File System - for file manipulation
 var busboy = require("connect-busboy");
 app.use(busboy());
+
+// ---------------------- File Upload ----------------------
+function addCount(localName, type) {
+    var localPath = './img/' + localName; //__dirname + '/img/' + fileName;
+    var stats = fs.statSync(localPath)
+    var fileSize = stats["size"]
+    var sizeCount = {"ImageId" : localName, "ImageSize" : fileSize, "TimeStamp" : new Date()}
+    db.collection(type).insertOne(sizeCount, function(err, doc) {
+        // if (err) {
+        //     handleError(res, err.message, "Failed to create new contact.");
+        // } else {
+        //     res.status(201).json(doc.ops[0]);
+        // }
+    });
+}
+
 
 app.post("/upload", function(req, res) {
   if(req.busboy) {
@@ -132,9 +148,9 @@ app.post("/upload", function(req, res) {
       fstream = fs.createWriteStream(localPath);
       fileStream.pipe(fstream);
       fstream.on('close', function () {
-        console.log("Upload Finished of " + localName);
-        //res.redirect('back');           //where to go next
-        res.status(200).json(localName);
+          console.log("Upload Finished of " + localName);
+          addCount(localName, COUNT_UPLOADS)
+          res.status(200).json(localName);
       });
     });
     req.busboy.on('field', function(fieldname, val, fieldnameTruncated, valTruncated, encoding, mimetype){
@@ -145,7 +161,7 @@ app.post("/upload", function(req, res) {
     })
     req.busboy.on("finish", function() {
       console.log("finished")
-    })
+     })
     return req.pipe(req.busboy);
   }
   //Something went wrong -- busboy was not loaded
