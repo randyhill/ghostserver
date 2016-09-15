@@ -17,7 +17,7 @@
       </div>
       <tr ng-repeat="upload in uploads | orderBy:'TimeStamp'" style="cursor:pointer">
         <td>
-          <a ng-href="#/uploads/{{contact._id}}">ImageId: {{ upload.ImageId }} Time: {{ upload.TimeStamp }}</a>
+          <a ng-href="#/uploads/{{contact._id}}">Size: {{ upload.ImageSize }} Time: {{ upload.TimeStamp }}</a>
         </td>
       </tr>
     </tbody>
