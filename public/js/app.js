@@ -16,6 +16,13 @@ angular.module("contactsApp", ['ngRoute'])
                 resolve: {
                     uploads: function(Uploads) {
                         return Uploads.getUploads();
+                    },
+                    megabytes: function(Uploads) {
+                        var megs = 0
+                        for (upload in Uploads) {
+                            megs += upload.ImageSize
+                        }
+                        return megs
                     }
                 }
             })

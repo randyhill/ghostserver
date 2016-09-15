@@ -13,7 +13,7 @@
   <table class="table table-hover">
     <tbody>
      <div>
-       Count: {{uploads.length}}
+       Count: {{uploads.length}}<br>Megabytes: {{megabytes}}
       </div>
       <tr ng-repeat="upload in uploads | orderBy:'TimeStamp'" style="cursor:pointer">
         <td>
