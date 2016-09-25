@@ -1,39 +1,106 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="contactsApp">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-    <!-- Angular lib -->
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular-route.min.js"></script>
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-    <!-- Create some padding for body -->
-    <style>
-      body {
-        min-height: 2000px;
-        padding-top: 70px;
-      }
-    </style>
-
-    <script src="/js/app.js"></script>
-  </head>
-
-  <body style="background-color:#1eb1e3;color:white">
-    <nav class="navbar navbar-default navbar-fixed-top">
-      <div class="container" bgcolor="#1eb1e3">
-        <div class="navbar-header">
-          <div class="navbar-brand" href="#/">GhostPics</div>
+<html lang="en" class="no-js">
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]><html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]><html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><html class="no-js ie"><![endif]-->
+<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+<head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimal-ui">
+	<title>GhostPics - Vanishing Pictures for iMessage</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="description" content="Vanishing Pictures for iOS 10 iMessage. Now you see them now you don't. GhostPics the only secure iOS 10 iMessage app to send vanishing pictures.">
+	<meta name="keywords" content="GhostPics apple iOS10 messages messenger application vanishing disappearing expiring temporary images app">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="author" content="GhostPics" />
+    <meta property="og:title" content="GhostPics - Vanishing Pictures for iOS 10 iMessage. Now you see them now you don't. GhostPics the only secure iOS 10 iMessage app to send vanishing pictures." />
+    <meta property="og:image:url" content="/apple-touch-icon-144x144-precomposed.png" />
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="144">
+    <meta property="og:image:height" content="144">
+    <meta property="og:url" content="http://ghostpics.com" />
+    <meta property="al:ios:app_store_id" content="342792525" />
+	<meta property="al:ios:url" content=" - " />
+	<meta property="al:ios:app_name" content="GhostPics" />
+	<link rel="shortcut icon" href="favicon.png">
+	<link rel="shortcut icon" href="favicon.ico">
+	<!-- Feather Icons -->
+	<link rel="stylesheet" type="text/css" href="assets/css/styles.css">
+	<link rel="stylesheet" type="text/css" href="assets/css/component.css" />
+	<script src="assets/js/modernizer.js"></script>
+    </head>
+    <body>
+        <!-- Main container -->
+        <div class="container  fade-in one">
+            <!-- Blueprint header -->
+            <header class="bp-header cf">
+                <div class="ghostpics home">GhostPics</div>
+            </header>
+            <!-- Grid -->
+            <section class="slider">
+                <div class="slide slide--current button--zoom" data-content="content-1">
+                    <div class="slide__mover">
+                        <div class="zoomer flex-center">
+                       <img class="zoomer__image" src="images/iphone.png" alt="iPhone" />
+                            <div class="preview">
+                             <!-- slideshow -->
+                             <div class="project">
+                                <ul class="slideshow">
+                                     <li><img src="images/iphone-content-preview.png" width="242px" alt="iPhone app preview" /></li>
+                                     <li><img src="images/iphone-content-preview2.png" width="242px"  alt="iPhone app preview" /></li>
+                                </ul>
+                            </div>
+                            <!-- /slideshow -->
+                                <div class="zoomer__area zoomer__area--size-2"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="copyright"><p>click on the screen</p></div>
+                    <h2 class="slide__title  fade-in three"><span>Vanishing Pictures</span> for iMessage</h2>
+                    <img class="appstore" src="images/Download_on_the_App_Store_Badge_US-UK_135x40.svg" title="Download GhostPics on the App Store" alt="Download GhostPics on the App Store"/>
+                    <div class="copyright"><p>&copy GhostPics.</p></div>
+                </div>
+            </section>
+            <!-- /slider-->
+            <section class="content">
+                <div class="content__item" id="content-1">
+                <!-- fading slideshow-->
+                <div class="content__item-img rounded-right">
+                    <img class="content__item-img rounded-right" src="images/iphone-content.png" alt="GhostPics Screenshot" />
+                    </div>
+                <!-- /fading slideshow-->
+                    <div class="content__item-inner">
+                        <div class="ghostpics interior">&nbsp;</div>
+                        <h3>Vanishing Pictures for iMessage</h3>
+                        <p>Now you see it, now you don't. GhostPics is the only secure iMessage app to send vanishing pictures to other iOS 10 users. Send your surprise images with animations including flash, fade or blind effects! And rest easy knowing that they won’t be able to share the surprise with anyone else.</p>
+                    <h3>Using GhostPics is simple</h3>
+                            <ol>
+                                <li>Select a picture with the Pick Photo button </li>
+                                <li>Choose any effect you want to display it with.</li>
+                                <li>Send! It's that simple. Your recipient will only be able to open and view the image in GhostPics, and only once. It vanishes immediately after viewing.</li>
+                            </ol>
+                        <h3>Frequently Asked Questions</h3>
+                            <p>Q: Do recipients need iOS 10 to view my picture?</p>
+                            <p>A: Yes, for the moment GhostPics is iOS 10 only, to ensures the security of the photos you share.</p>
+                       <h3>Tell us how we are doing.</h3>
+                        <p>Let us know by sending your constructive feedback and we'll try to add it to the next release <a href="mailto:ghostpics@nvariance.com">ghostpics@nvariance.com</a> <a class="ghost-button" href="mailto:ghostpics@nvariance.com">FEEDBACK&xrarr;</a></p>
+                    </div>
+                </div>
+                <button class="button button--close"><i class="icon icon--circle-cross"></i><span class="text-hidden">Close content</span></button>
+            </section>
         </div>
-      </div>
-    </nav>
-     <div class="container" ng-view>
-    </div>
-  </body>
-</html>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+        <script src="assets/js/studiolxv.js"></script>
+    <script>
+      $(function() {
+        $(".slideshow").responsiveSlides();
+      });
+    </script>
+    <script src="assets/js/classie.js"></script>
+    <script src="assets/js/tympanus-zoomslider-dynamics.js"></script>
+    <script src="assets/js/tympanus-zoomslider-main.js"></script>
+    </body>
+ </html>
